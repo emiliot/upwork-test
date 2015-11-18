@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('frontend', ['ngResource', 'ui.router', 'ui.bootstrap', 'auth0', 'angular-jwt', 'angular-storage'])
+angular.module('frontend', ['ngResource', 'ui.router', 'ui.bootstrap', 'auth0', 'angular-jwt', 'angular-storage', 'angularPayments'])
 	.config(function ($stateProvider, $urlRouterProvider, $httpProvider, authProvider, $locationProvider, jwtInterceptorProvider) {
 		$urlRouterProvider.otherwise('/login');
 
@@ -37,15 +37,22 @@ angular.module('frontend', ['ngResource', 'ui.router', 'ui.bootstrap', 'auth0', 
 
 		$httpProvider.interceptors.push('jwtInterceptor');
 
-	}).run(function($rootScope, auth, store, jwtHelper, $state){
-		if(!auth.isAuthenticated){
-			var token = store.get('token');
-			if(token){
-				if(!jwtHelper.isTokenExpired(token)){
-					auth.authenticate(store.get('profile'), token);
-				}else{
-					$state.go('login');
+	}).run(function($rootScope, auth, store, jwtHelper, $state, $window){
+		
+		// validate logged users
+		$rootScope.$on('$locationChangeStart', function(){
+			if(!auth.isAuthenticated){
+				var token = store.get('token');
+				if(token){
+					if(!jwtHelper.isTokenExpired(token)){
+						auth.authenticate(store.get('profile'), token);
+					}else{
+						$state.go('login');
+					}
 				}
 			}
-		}
+		});
+
+		$window.Stripe.setPublishableKey('pk_test_TmnSCKiAVHL7BhHmcQJvYYN4');
+		
 	});

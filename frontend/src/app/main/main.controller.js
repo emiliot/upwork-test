@@ -12,4 +12,26 @@ angular.module('frontend')
 			console.log('error ', response);
 		});
 	};
+
+	$scope.stripeCallback = function(code, result){
+		if(result.error){
+			console.log('failed ' + result.error.message);
+		}else{
+			$http({
+				url : 'http://localhost:5000/users/pay',
+				method : 'POST',
+				headers : {
+					'Content-type' : 'application/json'
+				},
+				data : {
+					stripeToken : result.id
+				}
+
+			}).then(function(response){
+				console.log('success', response);
+			}, function(response){
+				console.log('error', response);
+			});
+		}
+	};
 });

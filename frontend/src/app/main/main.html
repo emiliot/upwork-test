@@ -1,4 +1,10 @@
 <div class="container">
+	<form stripe-form="stripeCallback">
+		<input ng-model="number" placeholder="Card number" payments-format="card" payments-validate="card"/>
+		<input ng-model="expiry" placeholder="Expiration" payments-format="expiry" payments-validate="expiry"/>
+		<input ng-model="cvc" placeholder="CVC" payments-format="cvc" payments-validate="cvc"/>
+		<button type="submit" class="btn btn-danger">Pay with Card</button>
+	</form>
 	
 	<div class="jumbotron text-center">
 		<input type="button" class="btn btn-primary btn-large" value="Call api" ng-click="callApi()">
