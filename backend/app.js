@@ -5,28 +5,17 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var cors = require('cors');
-var dotenv = require('dotenv');
-var jwt = require('express-jwt');
-var mongoose = require('mongoose');
+
+var db = require('./models');
+var common = require('./common');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
 
-dotenv.load();
-var authenticate = jwt({
-	secret : new Buffer(process.env.AUTH0_CLIENT_SECRET, 'base64'),
-	audience : process.env.AUTH0_CLIENT_ID
-});
-
 var app = express();
 
-// database connection test
-mongoose.connect('mongodb://emiliot:upwork-test@ds033153.mongolab.com:33153/upwork-test')
-var db = mongoose.connection;
-db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function (callback) {
-	console.log('good');
-});
+// connect to database
+db.connect();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -42,7 +31,7 @@ app.use(cors());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
-app.use('/users', authenticate, users);
+app.use('/users', common.authenticate, users);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
