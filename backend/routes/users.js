@@ -1,5 +1,9 @@
-var express = require('express');
-var router = express.Router();
+'use strict';
+
+var express = require('express'),
+	router = express.Router(),
+	mongoose = require('mongoose'),
+	transaction = mongoose.model('Transaction');
 
 var stripe = require("stripe")("sk_test_nUKJjc3pSxcHrfBatrzqfEw9");
 
@@ -16,14 +20,26 @@ router.post('/pay', function(req, res, next){
 		source : stripeToken,
 		description : "Example charge"
 	}, function(err, charge){
-		if(err && err.type === 'StripeCardError'){
+		if((err && err.type === 'StripeCardError') || !charge.paid){
 			res.status(400).send({
 				error : 'Card rejected for payment'
 			});
 		}else{
-			res.send({
-				status : 'payment successful',
-				charge : charge
+			transaction.create({
+				status : charge.status,
+				amount : charge.amount,
+				stripeId : charge.id,
+				currency : charge.currency,
+				createdAt : charge.created
+			}, function(err, result){
+				if(err){
+					res.status(500).send({ 
+						error :  "Error occured while saving the transaction"
+					});
+				}
+				res.status(201).send({
+					transaction : result
+				});
 			});
 		}
 	});
