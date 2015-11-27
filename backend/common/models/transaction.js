@@ -12,4 +12,8 @@ var transactionSchema = new Schema({
 	createdAt : { type: Date, default: Date.now }
 });
 
+transactionSchema.statics.findByEmail = function(email, cb){
+	return this.find({ email : email}, cb);
+}
+
 mongoose.model('Transaction', transactionSchema);

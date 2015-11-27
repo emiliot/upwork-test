@@ -1,13 +1,38 @@
-<div class="container">
-	<form stripe-form="stripeCallback">
-		<input ng-model="number" placeholder="Card number" payments-format="card" payments-validate="card"/>
-		<input ng-model="expiry" placeholder="Expiration" payments-format="expiry" payments-validate="expiry"/>
-		<input ng-model="cvc" placeholder="CVC" payments-format="cvc" payments-validate="cvc"/>
-		<button type="submit" class="btn btn-danger">Pay with Card</button>
-	</form>
-	
-	<div class="jumbotron text-center">
-		<input type="button" class="btn btn-primary btn-large" value="Call api" ng-click="callApi()">
+<div class="container">	
+	<div class="row jumbotron">
+		<div class="col-xs-12 col-md-3">
+			<form stripe-form="stripeCallback">
+				<h3>Pay with credit card</h3>
+				<input ng-model="number" placeholder="Card number" payments-format="card" payments-validate="card" class="form-control"/>
+				<input ng-model="expiry" placeholder="Expiration" payments-format="expiry" payments-validate="expiry" class="form-control"/>
+				<input ng-model="cvc" placeholder="CVC" payments-format="cvc" payments-validate="cvc" class="form-control"/>
+				<select ng-model="paymentSelected" class="form-control" ng-options="value as value.text for value in paymentOptions">
+				</select>
+				<br>
+				<button type="submit" class="btn btn-danger">Pay with Card</button>
+			</form>
+		</div>
+		<div class="col-xs-12 col-md-8 col-md-offset-1">
+			<h4>Transactions for <strong>{{user.email}}</strong></h4>
+			<table class="table table-striped">
+				<thead>
+					<th>Id</th>
+					<th>Date</th>
+					<th>Amount</th>
+					<th>Status</th>
+					<th>Currency</th>
+				</thead>
+				<tbody>
+					<tr ng-repeat="transaction in transactions track by $index">
+						<td>{{ transaction._id | limitTo: -4}}</td>
+						<td>{{ transaction.createdAt | date : "MM/dd/yyyy" }}</td>
+						<td>{{ transaction.amount / 100.0 | currency }}</td>
+						<td>{{ transaction.status }}</td>
+						<td>{{ transaction.currency }}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
 	</div>
 
 </div>

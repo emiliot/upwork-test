@@ -28,6 +28,5 @@ angular.module('frontend')
 				scope: 'openid name email'
 			}, onLoginSuccess, onLoginFailed);
 		}
-
-		console.log('login');
+		
 	}]);
