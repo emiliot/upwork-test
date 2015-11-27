@@ -1,32 +1,32 @@
-'use strict';
+(function(){
+	'use strict';
 
-angular.module('frontend')
-	.controller('LoginCtrl', ['$scope', 'auth', '$state', 'store', function($scope, auth, $state, store){
-		$scope.user = '';
-		$scope.password = '';
+	angular.module('frontend')
+		.controller('LoginController', LoginController);
+
+	function LoginController($scope, auth, $state, store){
+		var vm = $scope;
+		vm.user = '';
+		vm.password = '';
 
 		function onLoginSuccess(profile, token){
-			$scope.$parent.message = '';
 			$state.go('home');
-			$scope.loading = false;
+			vm.loading = false;
 			store.set('profile', profile);
 			store.set('token', token);
 		}
 
 		function onLoginFailed(){
-			$scope.$parent.message = 'invalid credentials';
-			$scope.loading = false;
+			vm.$parent.message = 'invalid credentials';
+			vm.loading = false;
 		}
 
-		$scope.doGoogleAuthWithPopup = function(){
-			$scope.$parent.message = 'loading ...';
-			$scope.loading = true;
-
+		vm.doGoogleAuthWithPopup = function(){
 			auth.signin({
 				popup : false,
 				connection : 'google-oauth2',
 				scope: 'openid name email'
 			}, onLoginSuccess, onLoginFailed);
 		}
-		
-	}]);
+	}
+})();

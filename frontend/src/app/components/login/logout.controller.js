@@ -1,9 +1,13 @@
-'use strict';
+(function(){
+	'use strict';
 
-angular.module('frontend')
-	.controller('LogoutCtrl', ['$scope', 'auth', 'store', '$state',  function($scope, auth, store, $state){
+	angular.module('frontend')
+	.controller('LogoutController', LogoutController);
+
+	function LogoutController($scope, auth, store, $state){
 		auth.signout();
 		store.remove('profile');
 		store.remove('token');
 		$state.go('login');
-	}]);
+	}
+})();
