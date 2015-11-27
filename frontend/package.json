@@ -1,9 +1,13 @@
 {
   "name": "frontend",
   "version": "0.0.0",
-  "dependencies": {},
+  "dependencies": {
+    "express": "^4.13.3",
+    "gzippo": "^0.2.0"
+  },
   "scripts": {
-    "test": "gulp test"
+    "test": "gulp test",
+    "start" : "gulp serve"
   },
   "devDependencies": {
     "estraverse": "~4.1.0",
