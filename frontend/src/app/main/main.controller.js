@@ -19,7 +19,7 @@ angular.module('frontend')
 	$scope.getTransactions = function(){
 		var email = $scope.user.email;
 		$http({
-			url : 'http://localhost:5000/users',
+			url : 'https://infinite-spire-2507.herokuapp.com/users',
 			method : 'GET',
 			params : {
 				email : email
@@ -39,7 +39,7 @@ angular.module('frontend')
 		}else{
 			var email = $scope.user.email;
 			$http({
-				url : 'http://localhost:5000/users/pay',
+				url : 'https://infinite-spire-2507.herokuapp.com/users/pay',
 				method : 'POST',
 				headers : {
 					'Content-type' : 'application/json'
