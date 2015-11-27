@@ -25,7 +25,7 @@
 		vm.getTransactions = function(){
 			var email = vm.user.email;
 			$http({
-				url : 'http://localhost:5000/users',
+				url : 'https://infinite-spire-2507.herokuapp.com/users',
 				method : 'GET',
 				params : {
 					email : email
@@ -44,7 +44,7 @@
 			}else{
 				var email = vm.user.email;
 				$http({
-					url : 'http://localhost:5000/users/pay',
+					url : 'https://infinite-spire-2507.herokuapp.com/users/pay',
 					method : 'POST',
 					headers : {
 						'Content-type' : 'application/json'
